@@ -9,14 +9,15 @@
 pragma solidity 0.4.24;
 
 contract Inheritance {
-    address private receiver;
-    address private giver;
+    address public receiver;
+    address public giver;
     
     uint public moneyAmmount;
     uint8 public voteChecker;
     uint public numberOfVotes;
     uint public timeFrame = now + (365 days);
-    
+    event Giver(address giver);
+
     struct Voters {
         bool vote;
         bool isVoter;
@@ -39,12 +40,16 @@ contract Inheritance {
         giver = _giver;
         receiver = _receiver;
         numberOfVotes = _numberOfVotes;
-        
         for(uint8 n; n < _trustGroup.length; n++) {
             trustGroupVoting[_trustGroup[n]].isVoter = true; 
         }
     }
     
+    function eventEmitter() public{
+        emit Giver(giver);
+
+    }
+
     function trustGroupVote(bool _vote) public {
         require(trustGroupVoting[msg.sender].isVoter );
         
